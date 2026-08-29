@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnuVerse Notes AI</title>
+<script src="https://js.puter.com/v2/"></script>
+<style>
+body{font-family:sans-serif;background:#f5f0ff;padding:15px}
+h2{text-align:center;color:#7c3aed}
+.card{background:white;padding:20px;border-radius:18px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+textarea{width:100%;height:120px;border-radius:12px;border:2px solid #c4b5fd;padding:12px;font-size:15px;box-sizing:border-box}
+button{background:#7c3aed;color:white;border:none;padding:14px;width:100%;border-radius:12px;font-size:17px;font-weight:bold;margin-top:12px;cursor:pointer}
+#output{background:#ede9fe;padding:16px;border-radius:12px;margin-top:16px;line-height:1.7;min-height:80px}
+</style>
+</head>
+<body>
+<h2>🚀 AnuVerse Notes AI</h2>
+<p style="text-align:center;font-size:13px;color:#666"><b>Built by Anushka | CSE AIML | First Year</b></p>
+
+<div class="card">
+<textarea id="q" placeholder="Kuch bhi pucho... Ship wala, Oxygen wala, kuch bhi!"></textarea>
+<button id="btn" onclick="ask()">✨ Real AI se Pucho</button>
+<div id="output">Yaha real AI ka jawab ayega...</div>
+</div>
+
+<script>
+async function ask(){
+  let input = document.getElementById('q').value.trim();
+  let out = document.getElementById('output');
+  let btn = document.getElementById('btn');
+  if(!input) return alert('Pehle kuch likho!');
+
+  btn.innerText = "AI Soch Raha Hai... 🤔";
+  out.innerText = "⏳ 3 sec ruko, Real AI se jawab aa raha hai...";
+
+  try {
+    const response = await puter.ai.chat("You are AnuVerse AI built by Anushka. Answer in simple Hinglish with clear points: " + input);
+
+    let text = "";
+    if (typeof response === 'string') {
+      text = response;
+    } else if (response.message && response.message.content) {
+      text = response.message.content[0].text || response.message.content;
+    } else if (response.toString) {
+      text = response.toString();
+    }
+
+    let cleanText = text.replace(/\*\*(.*?
