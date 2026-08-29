@@ -1,4 +1,24 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AnuVerse AI - V2 Pro</title>
+function ask(){
+ let q=document.getElementById('q').value.trim(); if(!q) return;
+ let chat=document.getElementById('chat'); 
+ chat.innerHTML+=`<div class='msg user'>${q}</div>`; 
+ document.getElementById('q').value='';
+ let l=q.toLowerCase(); 
+ let a="";
+
+ if(l.includes('engineering mathematics')||l.includes('syllabus')){
+   a=`📚 <b>Engineering Mathematics Syllabus</b><br><br>
+   <b>1. Calculus:</b> Limits, Continuity, Differentiability<br>
+   <b>2. Linear Algebra:</b> Matrix, Eigen Values<br>
+   <b>3. Differential Equations</b><br>
+   <b>4. Probability & Statistics</b><br><br>
+   ✅ Tumhare notes "${savedNotes||notesText}" se yehi important hai!`;
+ } else {
+   let src = (typeof savedNotes !== 'undefined' ? savedNotes : notesText) || "";
+   a = src ? `📌 Tumhare notes se:<br><br>${src.substring(0,250)}<br><br>✅ Yehi exam me likhna!` : `Pehle notes save karo!`;
+ }
+ setTimeout(()=>{chat.innerHTML+=`<div class='msg ai'>${a}</div>`;chat.scrollTop=chat.scrollHeight},400);
+}<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AnuVerse AI - V2 Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',sans-serif}
