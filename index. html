@@ -1,4 +1,34 @@
 <!DOCTYPE html>
+<html>
+<head>
+<title>AnuVerse AI - Notes Summarizer</title>
+<style>
+body{font-family:Arial;background:#0a0a23;color:white;text-align:center;padding:30px}
+textarea{width:90%;height:150px;padding:15px;border-radius:10px}
+button{background:gold;color:black;padding:12px 25px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;margin-top:15px}
+#output{margin-top:20px;background:white;color:black;padding:15px;border-radius:10px;min-height:50px}
+</style>
+</head>
+<body>
+<h1>AnuVerse AI 🚀</h1>
+<p>From Raebareli to the Universe</p>
+<h3>Notes Summarizer - Founder Anushka</h3>
+<textarea id="notes" placeholder="Yaha apne 50 page ke notes paste karo..."></textarea><br>
+<button onclick="summarize()">Summarize Karo ✨</button>
+<div id="output">Yaha aapka summary ayega...</div>
+
+<script>
+function summarize(){
+  let text = document.getElementById("notes").value;
+  if(text.length < 50){ alert("Thoda aur text likho!"); return; }
+  // Simple AI Logic - First 3 important lines
+  let sentences = text.split('.');
+  let summary = sentences.slice(0, 3).join('. ') + ".";
+  document.getElementById("output").innerHTML = "<b>Summary:</b><br>" + summary + "<br><br><b> - Powered by AnuVerse AI</b>";
+}
+</script>
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
