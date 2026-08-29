@@ -36,7 +36,7 @@ async function ask(){
   try {
     // Ye Google nahi, Puter AI hai - Free & No Key needed
     const response = await puter.ai.chat("You are AnuVerse AI built by Anushka. Answer in simple Hinglish with points: " + input);
-    out.innerText = response;
+    out.innerHTML = response.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
   } catch(e) {
     out.innerText = "❌ Error: " + e.message;
   }
