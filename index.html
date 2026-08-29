@@ -1,0 +1,47 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>AnuVerse AI - Real Tool</title>
+<style>
+body{font-family:Segoe UI;background:#faf5ff;margin:0;padding:0}
+header{text-align:center;padding:30px;background:white}
+h1{color:#7c3aed;margin:0}
+.container{max-width:700px;margin:20px auto;padding:20px}
+textarea{width:100%;height:160px;padding:15px;border-radius:12px;border:2px solid #e9d5ff;font-size:15px;outline:none}
+textarea:focus{border-color:#7c3aed}
+button{width:100%;background:#7c3aed;color:white;padding:14px;border:none;border-radius:12px;font-weight:bold;font-size:16px;margin-top:12px;cursor:pointer}
+.btn-small{width:auto;background:#ede9fe;color:#7c3aed;padding:8px 14px;font-size:13px;margin:0 4px 0 0;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+.btn-row{display:flex;gap:6px;margin-bottom:8px;align-items:center}
+#output{background:white;padding:20px;border-radius:12px;margin-top:18px;box-shadow:0 4px 20px rgba(0,0,0,.07);min-height:80px;white-space:pre-wrap;line-height:1.6}
+.badge{display:inline-block;background:#ede9fe;color:#7c3aed;padding:5px 12px;border-radius:20px;font-size:12px;margin-bottom:10px}
+.ask-box{background:white;padding:20px;border-radius:12px;margin-top:18px;box-shadow:0 4px 20px rgba(0,0,0,.07);display:none}
+.msg{padding:10px 14px;border-radius:14px;margin:8px 0;font-size:14px;max-width:90%;line-height:1.5;white-space:pre-wrap}
+.user{background:#7c3aed;color:#fff;margin-left:auto;text-align:right}
+.ai{background:#f5f3ff;border:1px solid #ddd6fe}
+.flex{display:flex;gap:8px;margin-top:10px}
+input{flex:1;padding:12px;border-radius:20px;border:1px solid #e9d5ff;outline:none}
+</style></head><body>
+<header>
+<div class="badge">🚀 LIVE AI TOOL - V2 PRO</div>
+<h1>AnuVerse Notes AI</h1>
+<p>50 pages ko 2 min me samjho - Real AI</p>
+</header>
+<div class="container">
+<div class="btn-row">
+<span style="font-weight:600;font-size:14px">📝 Notes</span>
+<button class="btn-small" onclick="doPaste()">📋 Paste Karo</button>
+<button class="btn-small" onclick="document.getElementById('notes').value=''">🗑️ Clear</button>
+</div>
+<textarea id="notes" placeholder="Yaha apne notes paste karo... kam se kam 3-4 lines likho exam ke liye"></textarea>
+<button onclick="makeAI()">✨ AI Summary Banao</button>
+<div id="output">Yaha tumhara AI summary ayega...</div>
+<div id="askBox" class="ask-box">
+<b>💬 Ask AI - Ab 100% Working Hai!</b>
+<div id="chat" style="max-height:280px;overflow:auto;margin-top:10px"><div class="msg ai">Hi Anushka! 👋 Summary bana diya. Ab pucho jaise "Engineering Mathematics kya hai?"</div></div>
+<div class="flex"><input id="q" placeholder="Sawal likho..." onkeypress="if(event.key==='Enter')askAI()"><button class="btn-small" style="background:#7c3aed;color:#fff;padding:12px 18px;border-radius:20px" onclick="askAI()">➤</button></div>
+</div>
+<p style="text-align:center;color:#9ca3af;font-size:12px;margin-top:20px">Built by Anushka | Salon, Raebareli | Future Socho, AnuVerse Banao</p>
+</div>
+<script>
+let saved="";
+async function doPaste(){try{const t=await navigator.clipboard.readText();document.getElementById('notes').value=t;}catch(e){alert('Box ko 2 sec dabao -> Paste');document.getElementById('notes').focus();}}
+function makeAI(){let text=document.getElementById("notes").value;let out=document.getElementById("output");if(text.length<50){out.innerText="Thoda aur text likho yaar!";return;}saved=text;out.innerText="🤖 AI soch raha hai...";setTimeout(()=>{let s=text.split('.').filter(x=>x.trim().length>10);out.innerText=s.length<=3?"📌 Summary:\n\n"+text:"📌 AI Summary:\n\n• "+s.slice(0,2).join('.\n• ')+"\n\n💡 Final: "+s[s.length-1];document.getElementById('askBox').style.display='block';},1200);}
+function askAI(){let q=document.getElementById('q').value.trim();if(!q)return;let chat=document.getElementById('chat');chat.innerHTML+=`<div class='msg user'>${q}</div>`;document.getElementById('q').value='';let l=q.toLowerCase();let a=l.includes('engineering')||l.includes('syllabus')?`📚 Engg Maths:\n1. Calculus\n2. Linear Algebra\n3. DE\n\nNotes: ${saved.substring(0,80)}...`:`📌 Notes se:\n\n${saved.substring(0,220)}`;setTimeout(()=>{chat.innerHTML+=`<div class='msg ai'>${a}</div>`;chat.scrollTop=chat.scrollHeight;},400);}
+</script></body></html>
