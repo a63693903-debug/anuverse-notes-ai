@@ -38,7 +38,7 @@
 <div class="nav"><span onclick="show('s2')">🏠<br>Home</span><span onclick="show('s3')">☁️<br>Upload</span><span onclick="show('s7')" style="color:#a78bfa">💬<br>Ask AI</span></div>
 
 <script>
-let notesText="";
+let notesText=""
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function doUpload(){
  notesText=document.getElementById('realnotes').value;
