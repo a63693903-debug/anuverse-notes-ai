@@ -53,6 +53,6 @@ function ask(){
      answer="Aapne pucha: <b>"+q+"</b><br><br>Iska answer: Ye topic tumhare notes me hai. Pehle upar notes save karo fir mai exact line se answer dunga!<br><br>Example ke liye upar box me kuch likho aur Save karo.";
    }
  }
- setTimeout(()=>{ chat.innerHTML+=`<div class='msg ai'>${answer}</div>`; chat.scrollTop=chat.scrollHeight; },300);
+ setTimeout(()=>{ chat.innerHTML+=`<div class=msg ai'>${answer}</div>`; chat.scrollTop=chat.scrollHeight; },300);
 }
 </script></body></html>
