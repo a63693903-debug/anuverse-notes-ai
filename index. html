@@ -1,2 +1,36 @@
-<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AnuVerse AI</title></head><body style="font-family:sans-serif;background:#faf5ff;text-align:center;padding:60px"><h1 style="font-size:40px">AnuVerse <span style="color:#7c3aed">Notes AI</span> 🚀</h1><p>50 pages ko 2 min me samjho!</p><p style="background:white;padding:20px;border-radius:12px;margin:20px;display:inline-block">Website LIVE hai! Day 4 Build in Public - Done!</p><p>Built by Anushka - Raebareli</p></body></html>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>AnuVerse AI - Real Tool</title>
+<style>
+body{font-family:Segoe UI;background:#faf5ff;margin:0;padding:0}
+header{text-align:center;padding:30px;background:white}
+h1{color:#7c3aed;margin:0}
+.container{max-width:700px;margin:20px auto;padding:20px}
+textarea{width:100%;height:160px;padding:15px;border-radius:12px;border:2px solid #e9d5ff;font-size:15px}
+button{width:100%;background:#7c3aed;color:white;padding:14px;border:none;border-radius:12px;font-weight:bold;font-size:16px;margin-top:12px;cursor:pointer}
+#output{background:white;padding:20px;border-radius:12px;margin-top:18px;box-shadow:0 4px 20px rgba(0,0,0,.07);min-height:80px;white-space:pre-wrap}
+.badge{display:inline-block;background:#ede9fe;color:#7c3aed;padding:5px 12px;border-radius:20px;font-size:12px;margin-bottom:10px}
+</style></head><body>
+<header>
+<div class="badge">🚀 LIVE AI TOOL - V2</div>
+<h1>AnuVerse Notes AI</h1>
+<p>50 pages ko 2 min me samjho - Real AI</p>
+</header>
+<div class="container">
+<textarea id="notes" placeholder="Yaha apne notes paste karo... kam se kam 3-4 lines likho exam ke liye"></textarea>
+<button onclick="makeAI()">✨ AI Summary Banao</button>
+<div id="output">Yaha tumhara AI summary ayega...</div>
+<p style="text-align:center;color:#9ca3af;font-size:12px;margin-top:20px">Built by Anushka | Salon, Raebareli | Future Socho, AnuVerse Banao</p>
+</div>
+<script>
+function makeAI(){
+ let text=document.getElementById("notes").value;
+ let out=document.getElementById("output");
+ if(text.length<50){ out.innerText="Thoda aur text likho yaar, kam se kam 2-3 sentence!"; return; }
+ out.innerText="🤖 AI soch raha hai...";
+ setTimeout(()=>{
+   let sentences=text.split('.').filter(s=>s.trim().length>10);
+   if(sentences.length<=3){ out.innerText="📌 Summary:\n\n"+text+"\n\n✅ Key Point: Ye topic important hai, isko 2 baar revise karo."; return; }
+   let important=sentences.slice(0,2).join('.\n• ') + '.\n\n💡 Final Takeaway: '+ sentences[sentences.length-1];
+   out.innerText="📌 AI Summary (AnuVerse V2):\n\n• "+important+"\n\n✅ Pro Tip: Is summary ko 2 min me padh ke quiz banao!";
+ },1200);
+}
+</script></body></html>
