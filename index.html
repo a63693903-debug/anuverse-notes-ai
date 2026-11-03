@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AnuVerse Notes AI</title>
+<style>body{font-family:sans-serif;background:#f5f0ff;padding:12px;margin:0}h2{text-align:center;color:#7c3aed}.card{background:#fff;padding:16px;border-radius:18px;box-shadow:0 4px 10px rgba(0,0,0,.08)}textarea{width:100%;height:100px;border-radius:12px;border:2px solid #c4b5fd;padding:12px;font-size:16px;box-sizing:border-box}button{background:#7c3aed;color:#fff;border:none;padding:15px;width:100%;border-radius:12px;font-size:17px;font-weight:bold;margin-top:10px;cursor:pointer}#output{background:#f8f7ff;padding:14px;border-radius:12px;margin-top:12px;min-height:60px;white-space:pre-wrap;line-height:1.7;border:1px solid #e9d5ff;font-size:14px}</style>
+</head>
+<body>
+<h2>🚀 AnuVerse Notes AI</h2>
+<div class="card">
+<textarea id="q" placeholder="Koi bhi topic likho... Ex: Pointers, Natyashastra, Photosynthesis, OS..."></textarea>
+<button onclick="ask()" id="btn">✨ Ask From Real AI</button>
+<div id="output">Answer will appear here...</div>
+</div>
+<script>
+async function ask(){
+ const q = document.getElementById('q').value.trim();
+ const out = document.getElementById('output');
+ const btn = document.getElementById('btn');
+ if(!q) return;
+ out.innerText = "⏳ Writing best notes for '"+q+"'...";
+ btn.innerText = "Thinking...";
+
+ const prompt = `You are AnuVerse Notes AI. User is a B.Tech 1st year student but asks ANY topic.
+ Topic: "${q}"
+
+ Your Job:
+ - Understand the topic intelligently. If it's an acronym like CNN, Pointers, FET, take Computer Science/Engineering meaning. If it's Natyashastra, History, Science, then take its general academic meaning. Don't give TV channel meaning.
+ - Always give HIGH QUALITY toppers notes.
+
+ Format (compulsory, no ** stars, no #):
+ Definition: 1 simple line
+
+ 3 Key Points:
+ - Point 1 (with important keyword)
+ - Point 2 (with example)
+ - Point 3 (with application)
+
+ Trick: One funny Hinglish trick to remember
+
+ Exam Tip: How to write in exam for full marks
+
+ Keep total under 120 words, simple English.`;
+
+ try{
+   const url = "https://text.pollinations.ai/" + encodeURIComponent(prompt) + "?model=openai-fast&seed=" + Date.now();
+   const res = await fetch(url);
+   let text = await res.text();
+   text = text.replaceAll("**","").replaceAll("*","");
+   out.innerText = text;
+ }catch(e){
+   out.innerText = "Server busy, 2 sec baad fir se click karo, pakka ayega.";
+ }
+ btn.innerText = "✨ Ask From Real AI";
+}
+</script>
+</body>
+</html>
