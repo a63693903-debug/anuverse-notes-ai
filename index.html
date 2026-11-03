@@ -17,29 +17,37 @@ button{background:#7c3aed;color:white;border:none;padding:14px;width:100%;border
 <h2>🚀 AnuVerse Notes AI</h2>
 <p style="text-align:center;font-size:13px;color:#666"><b>Built by Anushka | CSE AIML | First Year</b></p>
 <div class="card">
-<textarea id="q" placeholder="Kuch bhi pucho... Ship wala, Oxygen wala, kuch bhi!"></textarea>
-<button id="btn" onclick="ask()">✨ Real AI se Pucho</button>
-<div id="output">Yaha real AI ka jawab ayega...</div>
+<textarea id="q" placeholder="Kuch bhi pucho... kuch bhi!"></textarea>
+<button id="btn" onclick="ask()">✨ Ask From Real Ai</button>
+<div id="output">Answer from Real Ai...</div>
 </div>
 <script>
 async function ask(){
  let question = document.getElementById("q").value;
  let output = document.getElementById("output");
  let btn = document.getElementById("btn");
- if(!question) return alert("Pehle kuch likho!");
- output.innerHTML = "Socha ja raha hai... ⏳";
+ if(!question.trim()){ output.innerText="Pehle kuch likho!"; return; }
+ output.innerText = "✨ Thinking...";
  btn.disabled = true;
- let finalPrompt = `You are AnuVerse Notes AI. Explain in simple Hinglish for a first year student. No ** stars. Use bullet points. Topic: ${question}. Give: Definition, 3 key points, yaad karne ki trick, exam me kaise likhe.`;
- try {
-  const response = await puter.ai.chat(finalPrompt);
-  let text = response.message?.content || response.toString();
-  text = text.replace(/Agar tum chaho.*$/gim, "").trim();
-  output.innerHTML = text.replaceAll("\n", "<br>");
- } catch(e){
-  output.innerHTML = "Error: " + e.message;
+ btn.innerText = "⏳ Thinking...";
+
+ let prompt = `You are AnuVerse Notes AI, built by Anushka. Explain in simple Hinglish for First Year CSE AIML student. Topic: ${question}. Give Definition, 3 key points in simple words, trick to remember, and how to write in exam. Keep it short.`;
+
+ try{
+  // Ye wala API sabke phone me chalega
+  let url = "https://text.pollinations.ai/" + encodeURIComponent(prompt);
+  let res = await fetch(url);
+  let text = await res.text();
+  
+  // Extra gyaan hata do
+  text = text.replace(/If you want.*$/gim,"").trim();
+  
+  output.innerHTML = text.replaceAll("\n","<br>");
+ }catch(e){
+  console.log(e);
+  output.innerText = "Network slow hai, ek baar aur try karo 🙏 Error: " + e.message;
  }
  btn.disabled = false;
+ btn.innerText = "✨ Ask from Real Ai";
 }
 </script>
-</body>
-</html>
