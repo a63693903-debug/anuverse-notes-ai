@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AnuVerse Notes AI</title>
+<style>body{font-family:sans-serif;background:#f5f0ff;padding:12px;margin:0}h2{text-align:center;color:#7c3aed}.card{background:#fff;padding:16px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,.1)}textarea{width:100%;height:110px;border-radius:14px;border:2px solid #c4b5fd;padding:14px;font-size:16px;box-sizing:border-box}button{background:#7c3aed;color:#fff;border:none;padding:18px;width:100%;border-radius:14px;font-size:18px;font-weight:bold;margin-top:12px;cursor:pointer}#output{background:#f8f7ff;padding:16px;border-radius:14px;margin-top:14px;min-height:80px;white-space:pre-wrap;line-height:1.7;border:1px solid #e9d5ff}</style>
+</head>
+<body>
+<h2>🚀 AnuVerse Notes AI</h2>
+<div class="card">
+<textarea id="q" placeholder="Koi bhi topic..."></textarea>
+<button type="button" id="btn" onclick="ask()">✨ Ask From Real AI - Click Karo</button>
+<div id="output">Answer yaha ayega...</div>
+</div>
+<script>
+async function getAnswer(promptText){
+  let r = await fetch("https://text.pollinations.ai/"+encodeURIComponent(promptText)+"?model=openai-fast");
+  let t = await r.text();
+  return t;
+}
+
+async function ask(){
+  var q = document.getElementById('q').value.trim();
+  var out = document.getElementById('output');
+  var btn = document.getElementById('btn');
+  if(!q) return;
+  
+  out.innerText = "⏳ '"+q+"' ke liye notes likh raha hu...";
+  btn.innerText = "Thoda ruko...";
+
+  try{
+    // Pehla try - Chhota prompt taki token limit error na aaye
+    let p1 = "Define "+q+" in 90 words. Format: Definition: 1 line. 3 Points: - - - . Trick: 1 line. Tip: 1 line. No reasoning, direct answer.";
+    let ans1 = await getAnswer(p1);
+
+    // Agar token limit wala error aaya to dusra chhota try
+    if(ans1.includes("exhausted") || ans1.includes("output_token_limit") || ans1.includes("UpstreamError")){
+      let p2 = "What is "+q+"? Explain in 60 words simple.";
+      ans1 = await getAnswer(p2);
+    }
+
+    if(ans1.includes("Free limit reached")){
+      out.innerText = "Bhai 20 sec ruko, fir click karo. Bahut tez click kar diya.";
+    }else{
+      out.innerText = ans1.replaceAll("**","").replaceAll("*","").replaceAll("{","").replaceAll("}","").replaceAll('"',"");
+      // Agar fir bhi JSON jaisa lage to saaf karna
+      if(out.innerText.length < 15 || out.innerText.includes("success")){
+         let p3 = q+" kya hai 50 words me batao";
+         let ans3 = await getAnswer(p3);
+         out.innerText = ans3.replaceAll("**","");
+      }
+    }
+  }catch(e){
+    out.innerText = "Network slow hai, ek baar aur click karo, pakka ayega.";
+  }
+  btn.innerText = "✨ Ask From Real AI - Click Karo";
+}
+</script>
+</body>
+</html>
