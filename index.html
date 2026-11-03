@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AnuVerse Notes AI</title>
+<style>
+body{font-family:sans-serif;background:#f5f0ff;padding:12px;margin:0}
+h2{text-align:center;color:#7c3aed}
+.card{background:#fff;padding:16px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+textarea{width:100%;height:110px;border-radius:14px;border:2px solid #c4b5fd;padding:14px;font-size:16px;box-sizing:border-box}
+button{background:#7c3aed;color:#fff;border:none;padding:18px;width:100%;border-radius:14px;font-size:18px;font-weight:bold;margin-top:12px;cursor:pointer;display:block}
+#output{background:#f8f7ff;padding:16px;border-radius:14px;margin-top:14px;min-height:80px;white-space:pre-wrap;line-height:1.7;border:1px solid #e9d5ff}
+</style>
+</head>
+<body>
+<h2>🚀 AnuVerse Notes AI</h2>
+<div class="card">
+<textarea id="q" placeholder="Koi bhi topic likho..."></textarea>
+<button type="button" id="btn" onclick="ask()">✨ Ask From Real AI - Click Karo</button>
+<div id="output">Yaha answer ayega...</div>
+</div>
+
+<script>
+async function ask(){
+  var q = document.getElementById('q').value.trim();
+  var out = document.getElementById('output');
+  var btn = document.getElementById('btn');
+  if(!q){ out.innerText="Pehle topic likho!"; return; }
+  
+  out.innerText = "⏳ '"+q+"' ke liye notes likh raha hu...";
+  btn.innerText = "Thoda ruko...";
+
+  try{
+    // DuckDuckGo - No 45 sec limit
+    var s = await fetch('https://duckduckgo.com/duckchat/v1/status', {headers:{'x-vqd-accept':'1'}});
+    var vqd = s.headers.get('x-vqd-4') || s.headers.get('x-vqd-3') || '';
+    var r = await fetch('https://duckduckgo.com/duckchat/v1/chat', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-vqd-4':vqd},
+      body: JSON.stringify({model:'gpt-4o-mini', messages:[{role:'user', content: "Explain "+q+" for B.Tech student in 110 words. Format: Definition: 1 line. 3 Key Points: - - - . Trick: 1 line. Exam Tip: 1 line. Simple English."}]})
+    });
+    var txt = await r.text();
+    var ans = "";
+    txt.split('\n').forEach(function(line){
+      if(line.indexOf('data: ')===0){
+        try{ var j=JSON.parse(line.slice(6)); if(j.message) ans+=j.message; }catch(e){}
+      }
+    });
+    if(ans.length>20){
+      out.innerText = ans.replaceAll("**","").replaceAll("*","");
+    }else{
+      throw new Error("duck empty");
+    }
+  }catch(e){
+    // Backup - Pollinations
+    try{
+      var r2 = await fetch("https://text.pollinations.ai/"+encodeURIComponent("Explain "+q+" in 110 words toppers notes: Definition, 3 Key Points, Trick, Exam Tip")+"?model=openai-fast");
+      var t2 = await r2.text();
+      if(t2.includes("Free limit reached")){
+        out.innerText = "Bhai 20 sec ruko, tez tez click kar diya. 20 sec baad fir se click karo, pakka ayega.";
+      }else{
+        out.innerText = t2.replaceAll("**","");
+      }
+    }catch(e2){
+      out.innerText = "Network slow hai, ek baar aur click karo.";
+    }
+  }
+  btn.innerText = "✨ Ask From Real AI - Click Karo";
+}
+</script>
+</body>
+</html>
