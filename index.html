@@ -25,24 +25,26 @@ button{background:#7c3aed;color:white;border:none;padding:14px;width:100%;border
 
 <script>
 async function ask(){
-  let input = document.getElementById('q').value.trim();
-  let out = document.getElementById('output');
-  let btn = document.getElementById('btn');
-  if(!input) return alert('Pehle kuch likho!');
+  let question = document.getElementById("q").value;
+  let output = document.getElementById("output");
+  let btn = document.getElementById("btn");
+  if(!question) return alert("Pehle kuch likho!");
 
-  btn.innerText = "AI Soch Raha Hai... 🤔";
-  out.innerText = "⏳ 3 sec ruko, Real AI se jawab aa raha hai...";
+  output.innerHTML = "Socha ja raha hai... ⏳";
+  btn.disabled = true;
+
+  let finalPrompt = `You are AnuVerse Notes AI. Explain in simple Hinglish for a first year student. No ** stars. Use bullet points. Topic: ${question}. Give: Definition, 3 key points, yaad karne ki trick, exam me kaise likhe.`;
 
   try {
-    const response = await puter.ai.chat("You are AnuVerse AI built by Anushka. Answer in simple Hinglish with clear points: " + input);
-
-    let text = "";
-    if (typeof response === 'string') {
-      text = response;
-    } else if (response.message && response.message.content) {
-      text = response.message.content[0].text || response.message.content;
-    } else if (response.toString) {
-      text = response.toString();
-    }
-
-    let cleanText = text.replace(/\*\*(.*?
+    const response = await puter.ai.chat(finalPrompt);
+    // Yahape wo response.replace wala error fix hai
+    let text = response.toString();
+    output.innerHTML = text.replaceAll("\n", "<br>");
+  } catch(e){
+    output.innerHTML = "Error: " + e.message;
+  }
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
