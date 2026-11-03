@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AnuVerse Notes AI</title>
+<style>body{font-family:sans-serif;background:#f5f0ff;padding:12px}h2{text-align:center;color:#7c3aed}.card{background:#fff;padding:16px;border-radius:18px}textarea{width:100%;height:100px;border-radius:12px;border:2px solid #c4b5fd;padding:12px;font-size:16px}button{background:#7c3aed;color:#fff;border:none;padding:15px;width:100%;border-radius:12px;font-size:17px;font-weight:bold;margin-top:10px} #output{background:#f8f7ff;padding:14px;border-radius:12px;margin-top:12px;white-space:pre-wrap;line-height:1.7}</style>
+</head>
+<body>
+<h2>🚀 AnuVerse Notes AI</h2>
+<div class="card">
+<textarea id="q" placeholder="Koi bhi topic likho..."></textarea>
+<button onclick="ask()" id="btn">✨ Ask From Real AI</button>
+<div id="output">Answer here...</div>
+</div>
+<script>
+async function ask(){
+ let q=document.getElementById("q").value.trim();
+ let out=document.getElementById("output");
+ if(!q)return;
+ out.innerText="⏳ Writing notes...";
+ let prompt=`Explain ${q} in simple English under 120 words. Format: Definition: 1 line. 3 Key Points: - - - . Trick: 1 line. Exam Tip: 1 line. No **. For acronyms like CNN, prefer CSE meaning.`;
+ try{
+  let r=await fetch("https://text.pollinations.ai/"+encodeURIComponent(prompt)+"?model=openai-fast");
+  let t=await r.text();
+  out.innerText=t.replaceAll("**","");
+ }catch(e){ out.innerText="Thoda slow hai, dobara click karo"; }
+}
+</script>
+</body>
+</html>
