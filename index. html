@@ -26,7 +26,7 @@ async function ask(){
     let r2=await fetch("https://text.pollinations.ai/"+encodeURIComponent("What is "+q+"? 60 words")+"?model=openai-fast");
     t=await r2.text();
   }
-  if(t.includes("Free limit")) out.innerText="20 sec ruko fir click karo, limit tha.";
+  if(t.includes("Free limit")) out.innerText="5 sec ruko fir click karo, limit tha.";
   else out.innerText=t.replaceAll("**","").replaceAll("*","");
  }catch(e){ out.innerText="Ek baar aur click karo, network slow tha."; }
 }
