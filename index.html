@@ -60,7 +60,7 @@ async function ask(){
  timer.innerText='';
  try{
   let p = q+" . Answer in 70 words max. Format: Definition + 3 Points + Trick. Be direct.";
-  let res = await fetch("https://text.pollinations.ai/"+encodeURIComponent(p)+"?model=mistral");
+  let res = await fetch("https://text.pollinations.ai/"+encodeURIComponent(p)+"?model=openai");
   let text = await res.text();
   if(text.length<20){
     let res2 = await fetch("https://text.pollinations.ai/"+encodeURIComponent(q)+"?model=openai-fast");
