@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnuVerse Notes AI</title>
+<script src="https://js.puter.com/v2/"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+*{font-family:'Inter',sans-serif;box-sizing:border-box}
+body{background:#f8f7ff;margin:0;padding:14px}
+.container{max-width:700px;margin:0 auto}
+header{text-align:center;padding:18px 0}
+header h1{font-size:26px;margin:0}
+header p{color:#6b7280;font-size:13px}
+.card{background:#fff;border-radius:22px;padding:18px;box-shadow:0 10px 30px rgba(124,58,237,.08)}
+textarea{width:100%;min-height:110px;border:1.5px solid #e5e7eb;border-radius:16px;padding:16px;font-size:16px;outline:none;resize:none}
+textarea:focus{border-color:#7c3aed}
+.btn{width:100%;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;padding:16px;border-radius:14px;font-size:16px;font-weight:700;margin-top:14px;cursor:pointer}
+.output-wrap{margin-top:18px;background:#fcfcff;border:1px solid #e9e5ff;border-radius:16px;padding:16px;min-height:120px}
+.label{font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.1em;display:flex;justify-content:space-between}
+#output{line-height:1.8;font-size:15px;white-space:pre-wrap;margin-top:8px}
+.ph{color:#9ca3af;font-size:14px}
+</style>
+</head>
+<body>
+<div class="container">
+<header><h1>✨ AnuVerse Notes AI</h1><p>Your intelligent study companion</p></header>
+<div class="card">
+<textarea id="q" placeholder="Ask anything... e.g., Define PN Junction, Tell me about Pointers"></textarea>
+<button class="btn" onclick="ask()" id="btn">⚡ Generate Answer</button>
+<div class="output-wrap"><div class="label"><span>AI RESPONSE</span><span id="timer"></span></div><div id="output"><div class="ph">💡 Your AI-generated answer will appear here.</div></div></div>
+</div>
+</div>
+<script>
+const INSTANT = {
+"pn junction": "Definition: PN Junction is formed when P-type and N-type semiconductors are joined together.\n\nKey Points:\n1. P-type = Holes majority, N-type = Electrons majority\n2. Depletion Region forms at junction - no free charge\n3. Works as Diode - current flows in one direction only\n\nTrick: PN = Positive-Negative, Diode = One-way traffic!",
+"pointer": "Definition: Pointer is a variable that stores address of another variable.\n\nKey Points:\n1. What is a pointer? - an address to a value.\n2. How to allocate/free it? - use 'new' / 'delete' or 'malloc' / 'free'.\n3. Dangling pointer = referencing freed memory.\n\nTrick: Misuse triggers undefined behavior.",
+"nlp": "Definition: NLP = Natural Language Processing. Computer ko human language samjhana.\n\nKey Points:\n1. Tokenization - sentence ko words me todna\n2. Stemming / Lemmatization\n3. Named Entity Recognition\n\nTrick: NLP = Machine + Language",
+"gita": "Bhagavad Gita me total 18 Chapters aur 700 Shlokas hai.\n\nKey Chapters: 1. Arjun Vishad Yog, 2. Sankhya Yog, 11. Vishwaroop Darshan Yog, 18. Moksha Sanyas Yog.\n\nTrick: 18 Chapters - Mahabharat bhi 18 din chala tha!"
+};
+async function ask(){
+ const q=document.getElementById('q').value.trim();
+ const out=document.getElementById('output');
+ const timer=document.getElementById('timer');
+ const btn=document.getElementById('btn');
+ if(!q) return;
+ const start=Date.now();
+ const lower=q.toLowerCase();
+ for(let key in INSTANT){
+   if(lower.includes(key)){ out.innerText=INSTANT[key]; timer.innerText='⚡ 0.1s • Instant'; return; }
+ }
+ btn.disabled=true; btn.innerText='⏳ Generating...';
+ out.innerText='✍️ Writing answer...';
+ try{
+   // NEW API - NO 45 sec limit, unlimited free
+   const res = await puter.ai.chat("Answer in 70 words. Format: Definition + 3 Key Points + Trick. Question: "+q, {model: "gpt-4o-mini"});
+   let text = res.message.content;
+   if(typeof text!=='string') text = JSON.stringify(text);
+   const t = ((Date.now()-start)/1000).toFixed(1);
+   out.innerText = text.replaceAll("**","").replaceAll("###","");
+   timer.innerText='⚡ '+t+'s';
+ }catch(e){
+   // Backup - Wikipedia (never fails, no limit)
+   try{
+     const w = await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(q)).then(r=>r.json());
+     out.innerText = w.extract || "Try again";
+     timer.innerText='⚡ Wikipedia';
+   }catch(e2){ out.innerText='❌ Network slow, try again'; }
+ }
+ btn.disabled=false; btn.innerText='⚡ Generate Answer';
+}
+</script>
+</body>
+</html>
